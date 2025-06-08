@@ -25,7 +25,6 @@ function ExerciseFormModal({ isVisible, onClose, onSubmit, initialData, topicId,
     easyOption: 'Dễ',
     mediumOption: 'Trung bình',
     hardOption: 'Khó',
-    cancelButton: 'Hủy',
     saveButton: 'Lưu thay đổi',
     addButton: 'Thêm bài tập',
     requiredFieldError: 'Vui lòng điền vào trường bắt buộc (Tiêu đề).',
@@ -184,18 +183,12 @@ function ExerciseFormModal({ isVisible, onClose, onSubmit, initialData, topicId,
     }
   };
 
-  const handleCancelOrClose = () => {
-    setFormData({ title: '', description: '', difficulty: 'medium', topic: topicId || 'TP005' });
-    setIsSubmitting(false); // Reset submitting state
-    onClose();
-  };
-
   return (
     <div className="modal-overlay visible">
       <div className="modal-content">
         <div className="modal-header">
           <h3>{initialData ? translations.editExerciseHeader : translations.addExerciseHeader}</h3>
-          <button className="modal-close-btn" onClick={handleCancelOrClose}>×</button>
+          <button className="modal-close-btn" onClick={onClose}>×</button>
         </div>
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
@@ -246,10 +239,7 @@ function ExerciseFormModal({ isVisible, onClose, onSubmit, initialData, topicId,
             </div>
 
             <div className="modal-actions">
-              <button type="button" className="cancel-btn" onClick={handleCancelOrClose} disabled={isSubmitting}>
-                {translations.cancelButton}
-              </button>
-              <button type="submit" className="create-btn" disabled={isSubmitting}>
+              <button type="submit" className="modal-save-btn" disabled={isSubmitting}>
                 {isSubmitting
                   ? 'Đang xử lý...'
                   : initialData
