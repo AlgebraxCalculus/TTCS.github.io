@@ -15,6 +15,7 @@ import cloudinary.uploader
 from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsAdmin, IsAdminOrUser, CanAccessOwnUserData
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.pagination import PageNumberPagination
 import logging
 import re
 from django.core.exceptions import ObjectDoesNotExist
@@ -142,14 +143,22 @@ def get_tokens_for_user(user):
         'access': str(access_token),
     }
 
+class CustomPagination(PageNumberPagination):
+    page_size = 5  # Số mục mặc định trên mỗi trang, khớp với frontend
+    page_size_query_param = 'page_size'  # Tùy chỉnh số mục qua query param
+    max_page_size = 20  # Giới hạn tối đa số mục trên một trang
+    page_query_param = 'page'  # Tên tham số cho số trang
+
 class UserListView(ListAPIView):
     queryset = User.objects.order_by('username')
     serializer_class = UserSerializer
     authentication_classes = []
     permission_classes = [IsAdmin]
+    pagination_class = CustomPagination  # Thêm phân trang
 
     def get(self, request, *args, **kwargs):
         try:
+            # Gọi phương thức get của ListAPIView để xử lý phân trang
             return super().get(request, *args, **kwargs)
         except Exception as e:
             return Response(
