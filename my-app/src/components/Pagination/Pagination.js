@@ -2,13 +2,7 @@ import React from 'react';
 import './Pagination.css'; // Import file CSS tương ứng
 
 // Component phân trang chung
-// Props:
-// - totalItems: Tổng số lượng item (users)
-// - itemsPerPage: Số lượng item trên mỗi trang
-// - currentPage: Trang hiện tại đang hiển thị (số từ 1)
-// - onPageChange: Hàm callback khi click vào một số trang
-// - onPreviousPage: Hàm callback khi click nút "Previous"
-// - onNextPage: Hàm callback khi click nút "Next"
+// Nhận các props: tổng số mục, số mục mỗi trang, trang hiện tại, và các hàm callback
 function Pagination({
     totalItems,
     itemsPerPage,
@@ -48,7 +42,7 @@ function Pagination({
 
                 {/* Nút Previous - disabled nếu đang ở trang đầu tiên */}
                 <button
-                    className="pagination-btn" // Sử dụng className
+                    className="pagination-btn" 
                     onClick={onPreviousPage}
                     disabled={currentPage === 1}
                 >
@@ -68,7 +62,7 @@ function Pagination({
 
                 {/* Nút Next - disabled nếu đang ở trang cuối cùng */}
                 <button
-                    className="pagination-btn" // Sử dụng className
+                    className="pagination-btn" 
                     onClick={onNextPage}
                     disabled={currentPage === totalPages}
                 >
