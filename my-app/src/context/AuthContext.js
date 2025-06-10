@@ -1,14 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode'; // Import jwtDecode
+import { jwtDecode } from 'jwt-decode'; 
 
-// Tên cookie bạn dùng để lưu access token
 const ACCESS_TOKEN_COOKIE_NAME = 'access_token';
 
-// Tạo Context
 const AuthContext = createContext(null);
 
-// Hook tùy chỉnh để sử dụng AuthContext dễ dàng hơn
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -20,11 +17,8 @@ export const useAuth = () => {
 
 // Component Provider
 export const AuthProvider = ({ children }) => {
-  // State để lưu trạng thái đăng nhập
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // State để lưu thông tin user (id, role). Khởi tạo là null.
   const [user, setUser] = useState(null);
-  // State để kiểm tra xem AuthProvider đã sẵn sàng chưa (đã kiểm tra cookie ban đầu)
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   // Hàm lấy token từ cookie
@@ -70,27 +64,26 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
     setIsAuthReady(true); // Đánh dấu là đã sẵn sàng sau khi kiểm tra cookie ban đầu
-  }, []); // Chạy một lần duy nhất khi component mount
+  }, []); // Chạy một lần duy nhất
 
   // Hàm được gọi từ component Login khi đăng nhập thành công
   // Hàm này cần nhận access token từ response đăng nhập
   const loginSuccess = (accessToken) => {
     // Lưu token vào cookie
-    Cookies.set(ACCESS_TOKEN_COOKIE_NAME, accessToken, { expires: 7 }); // expires tính bằng ngày
+    Cookies.set(ACCESS_TOKEN_COOKIE_NAME, accessToken, { expires: 7 }); 
 
     // Giải mã token để lấy thông tin user
     const userInfo = getUserFromToken(accessToken);
 
     if (userInfo) {
       setIsLoggedIn(true);
-      setUser(userInfo); // Cập nhật state user
+      setUser(userInfo); 
       console.log('Đăng nhập thành công, user state được cập nhật:', userInfo);
     } else {
-       // Xử lý trường hợp token nhận được nhưng không giải mã được user info cần thiết
        console.error('Đăng nhập thành công nhưng không lấy được user info từ token.');
        setIsLoggedIn(false);
        setUser(null);
-       Cookies.remove(ACCESS_TOKEN_COOKIE_NAME); // Xóa token lỗi
+       Cookies.remove(ACCESS_TOKEN_COOKIE_NAME); 
     }
   };
 
