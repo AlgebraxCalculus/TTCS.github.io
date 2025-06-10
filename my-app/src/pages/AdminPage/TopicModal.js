@@ -126,6 +126,7 @@ function TopicModal({ isVisible, onClose, onCreateNew, onAddExisting, roadmapId,
     if (isVisible) {
       const fetchExistingTopics = async () => {
         setIsLoadingExisting(true);
+        setSuccessMessage(null);
         setExistingError(null);
         const token = getToken();
         if (!token) {
